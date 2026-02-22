@@ -42,34 +42,53 @@ export default function HomePage({
 
       <main style={{ maxWidth: 900, margin: "0 auto", padding: 24 }}>
         <h1 style={{ margin: 0 }}>Sosyall Philosophy (Pages Router)</h1>
-        <p style={{ marginTop: 8, opacity: 0.75 }}>
-          Δημοσιεύσεις φιλοσοφίας, ιδεών και διαλόγου.
+        <p style={{ marginTop: 8, opacity: 0.75 }}>Δημοσιεύσεις φιλοσοφίας, ιδεών και διαλόγου.</p>
+
+        <p
+          style={{
+            marginTop: 12,
+            padding: "10px 12px",
+            border: "1px solid #e3e3e3",
+            borderRadius: 10,
+            background: "#fafafa",
+            fontSize: 14,
+          }}
+        >
+          Canonical δομή links: <code>/posts/[slug]</code>. Παλιά links της μορφής <code>/[slug]</code> γίνονται
+          αυτόματα redirect στο canonical URL.
         </p>
 
         <section style={{ marginTop: 24, display: "grid", gap: 16 }}>
           {posts.length === 0 ? (
             <p>Δεν υπάρχουν δημοσιευμένα posts ακόμη.</p>
           ) : (
-            posts.map((p) => (
-              <article
-                key={p.id}
-                style={{
-                  border: "1px solid #ddd",
-                  borderRadius: 12,
-                  padding: 16,
-                }}
-              >
-                <h2 style={{ margin: 0, fontSize: 20 }}>
-                  <Link href={`/posts/${p.slug}`}>{p.title}</Link>
-                </h2>
+            posts.map((p) => {
+              const canonicalHref = `/posts/${p.slug}`;
 
-                {p.excerpt ? <p style={{ marginTop: 10 }}>{p.excerpt}</p> : null}
+              return (
+                <article
+                  key={p.id}
+                  style={{
+                    border: "1px solid #ddd",
+                    borderRadius: 12,
+                    padding: 16,
+                  }}
+                >
+                  <h2 style={{ margin: 0, fontSize: 20 }}>
+                    <Link href={canonicalHref}>{p.title}</Link>
+                  </h2>
 
-                <small style={{ opacity: 0.7 }}>
-                  {new Date(p.createdAt).toLocaleDateString("el-GR")}
-                </small>
-              </article>
-            ))
+                  {p.excerpt ? <p style={{ marginTop: 10 }}>{p.excerpt}</p> : null}
+
+                  <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+                    <small style={{ opacity: 0.7 }}>{new Date(p.createdAt).toLocaleDateString("el-GR")}</small>
+                    <small style={{ opacity: 0.75 }}>
+                      Canonical: <Link href={canonicalHref}>{canonicalHref}</Link>
+                    </small>
+                  </div>
+                </article>
+              );
+            })
           )}
         </section>
       </main>
